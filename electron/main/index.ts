@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 import { update } from './update'
+var NodeID3 = require('node-id3')
 
 // The built directory structure
 //
@@ -119,3 +120,12 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
+ipcMain.on("update-titles", (_event, files) => {
+  files.map((item) => {
+    const tags = {
+      title: item.value
+    }
+    const success = NodeID3.write(tags, item.path)
+    console.log(success)
+  })
+})

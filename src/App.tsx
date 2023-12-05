@@ -1,40 +1,56 @@
-import { useState } from 'react'
-import UpdateElectron from '@/components/update'
-import logoVite from './assets/logo-vite.svg'
-import logoElectron from './assets/logo-electron.svg'
-import './App.css'
-
-console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`)
+import { useContext, useState } from "react";
+import File from "./components/File/File";
+import { IpcRenderer, ipcRenderer } from "electron";
 
 function App() {
-  const [count, setCount] = useState(0)
-  return (
-    <div className='App'>
-      <div className='logo-box'>
-        <a href='https://github.com/electron-vite/electron-vite-react' target='_blank'>
-          <img src={logoVite} className='logo vite' alt='Electron + Vite logo' />
-          <img src={logoElectron} className='logo electron' alt='Electron + Vite logo' />
-        </a>
-      </div>
-      <h1>Electron + Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Electron + Vite logo to learn more
-      </p>
-      <div className='flex-center'>
-        Place static files into the<code>/public</code> folder <img style={{ width: '5em' }} src='./node.svg' alt='Node logo' />
-      </div>
+  const [files, setFiles] = useState([]);
 
-      <UpdateElectron />
+  const handleChange = (event: any) => {
+    let mp3files = [];
+    const files = Array.from(event.target.files);
+    files.map((file) => {
+      if (file.type == "audio/mpeg") {
+        mp3files.push({
+          name: file.name,
+          path: file.path,
+        });
+      }
+    });
+    setFiles(mp3files);
+  };
+ 
+  const handleSave = () => {
+    const inputs = document.querySelectorAll(".input-title")
+
+    let modified_files = []
+
+    for (let i = 0; i < inputs.length; i++) {
+     console.log(inputs[i].value)
+     if(inputs[i].value.length){
+      modified_files.push({
+        path: inputs[i].getAttribute("data-file-path"),
+        value: inputs[i].value
+      })
+     }
+    }
+    console.log(modified_files)
+    ipcRenderer.send("update-titles", modified_files)
+  }
+
+  return (
+    <div>
+      <input
+        onChange={handleChange}
+        type="file"
+        className="p-3"
+        multiple={true}
+        webkitdirectory="true"
+      />
+      {files.length > 0 &&
+        files.map((file, index) => <File key={index} file={file} />)}
+        {files.length > 0 && <button className="p-3 m-3" onClick={handleSave}>Save</button>}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
