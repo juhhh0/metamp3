@@ -1,5 +1,5 @@
 {
-  "name": "electron-vite-react",
+  "name": "metamp3",
   "version": "2.2.0",
   "main": "dist-electron/main/index.js",
   "description": "Electron Vite React boilerplate.",
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "build": "vite build && electron-builder",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test"

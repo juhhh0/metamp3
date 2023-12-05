@@ -121,11 +121,16 @@ ipcMain.handle('open-win', (_, arg) => {
 })
 
 ipcMain.on("update-titles", (_event, files) => {
+
   files.map((item) => {
+
+    const currentTags = NodeID3.read(item.path)
+
     const tags = {
-      title: item.value
+      title: item.value.length > 0 ? item.value : currentTags.title || "",
+      APIC: item.img.length > 0 ? item.img : currentTags.image || ""
     }
+  
     const success = NodeID3.write(tags, item.path)
-    console.log(success)
   })
 })

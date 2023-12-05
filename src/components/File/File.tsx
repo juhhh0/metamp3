@@ -1,19 +1,28 @@
-import { AppContext } from "@/context/AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MetaImg from "../MetaImg";
 
 var jsmediatags = require("jsmediatags");
 
 export default function File({ file }) {
   const [title, setTitle] = useState("");
+  const [img, setImg] = useState({})
 
-  jsmediatags.read(file.path, {
-    onSuccess: function (tag) {
-      setTitle(tag.tags.title);
-    },
-    onError: function (error) {
-      console.log(":(", error.type, error.info);
-    },
-  });
+
+useEffect(() => {
+    jsmediatags.read(file.path, {
+        onSuccess: function (tag) {
+            console.log(tag)
+          setTitle(tag.tags.title);
+          setImg({
+            format: tag.tags.picture?.format,
+            data: tag.tags.picture?.data
+          })
+        },
+        onError: function (error) {
+          console.log(":(", error.type, error.info);
+        },
+      });
+},[])
 
   return (
     <div className="file p-3">
@@ -25,6 +34,9 @@ export default function File({ file }) {
         className="input-title bg-transparent border-none text-base text-white w-[600px]"
         placeholder={title}
       />
+      <input type="file" className="input-img"/>
+      {img.data && <MetaImg data={img.data} format={img.format}/>}
+
     </div>
   );
 }

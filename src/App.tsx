@@ -21,19 +21,19 @@ function App() {
  
   const handleSave = () => {
     const inputs = document.querySelectorAll(".input-title")
+    const imgs = document.querySelectorAll(".input-img")
 
     let modified_files = []
 
     for (let i = 0; i < inputs.length; i++) {
-     console.log(inputs[i].value)
-     if(inputs[i].value.length){
+     if(inputs[i].value.length || imgs[i]?.files[0]?.path){
       modified_files.push({
         path: inputs[i].getAttribute("data-file-path"),
-        value: inputs[i].value
+        value: inputs[i].value,
+        img: imgs[i]?.files[0]?.path || ""
       })
      }
     }
-    console.log(modified_files)
     ipcRenderer.send("update-titles", modified_files)
   }
 
