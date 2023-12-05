@@ -1,8 +1,5 @@
-import React from 'react';
-
 const MetaImg = ({ data, format }) => {
-  // Convertir le tableau d'octets en une chaîne base64
-  const CHUNK_SIZE = 8192; // Taille des morceaux, vous pouvez ajuster selon vos besoins
+  const CHUNK_SIZE = 8192; 
   let base64Image = '';
 
   for (let i = 0; i < data.length; i += CHUNK_SIZE) {
@@ -13,7 +10,6 @@ const MetaImg = ({ data, format }) => {
   base64Image = btoa(base64Image);
 
 
-//   // Construire l'URL de l'image en utilisant le format indiqué
   const imageUrl = `data:${format};base64,${base64Image}`;
 
   return (
