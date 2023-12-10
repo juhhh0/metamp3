@@ -127,7 +127,9 @@ ipcMain.on("update-titles", (_event, files) => {
     const currentTags = NodeID3.read(item.path)
 
     const tags = {
-      title: item.value.length > 0 ? item.value : currentTags.title || "",
+      title: item.title.length > 0 ? item.title : currentTags.title || "",
+      artist: item.artist.length > 0 ? item.artist : currentTags.artist || "",
+      album: item.album.length > 0 ? item.album : currentTags.album || "",
       APIC: item.img.length > 0 ? item.img : currentTags.image || ""
     }
   

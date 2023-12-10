@@ -24,6 +24,38 @@
   box-sizing: border-box;
 }
 
+table, tr{
+  width: 100%;
+}
+
+table{
+  padding: 15px 30px;
+}
+
+tr{
+  padding: 15px 0px;
+}
+
+td{
+  padding: 5px 0;
+}
+
+tr > td:first-child{
+  width: 80px;
+}
+
 .file{
   border-bottom: 1px solid white;
+}
+
+.input-img{
+  display: none;
+}
+
+.img-label{
+  display: block;
+  padding: 0 5px;
+  width: fit-content;
+  height: fit-content;
+  background: grey;
 }
